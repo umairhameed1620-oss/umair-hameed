@@ -1,3 +1,143 @@
+/* ── SERVICES ── */
+.section { padding: 6rem 4rem; }
+.section-label {
+  font-size: 0.78rem; font-weight: 500; color: var(--terracotta);
+  letter-spacing: 0.12em; text-transform: uppercase;
+  display: flex; align-items: center; gap: 0.7rem;
+  margin-bottom: 1rem;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 3.5vw, 3.2rem);
+  font-weight: 300; line-height: 1.15; color: var(--deep);
+  margin-bottom: 1rem;
+}
+h2 em { font-style: italic; color: var(--terracotta); }
+.section-sub { font-size: 1rem; color: var(--mid); line-height: 1.7; max-width: 540px; margin-bottom: 3.5rem; }
+.services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.service-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 1.2rem; padding: 2rem;
+  transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+  position: relative; overflow: hidden;
+}
+.service-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--terracotta), var(--terracotta-light));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.3s;
+}
+.service-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(201,106,63,0.12); border-color: #E8C4A8; }
+.service-card:hover::before { transform: scaleX(1); }
+.service-icon {
+  width: 52px; height: 52px; border-radius: 0.8rem;
+  background: #FFF5EE; display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; margin-bottom: 1.2rem;
+}
+.service-title { font-size: 1rem; font-weight: 500; color: var(--deep); margin-bottom: 0.6rem; }
+.service-desc { font-size: 0.88rem; color: var(--mid); line-height: 1.65; }
+
+/* ── HOW IT WORKS ── */
+.how-section {
+  padding: 6rem 4rem;
+  background: var(--deep); color: var(--cream);
+  position: relative; overflow: hidden;
+}
+.how-section::before {
+  content: '';
+  position: absolute; top: -50%; right: -10%;
+  width: 600px; height: 600px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,106,63,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+.how-section .section-label { color: var(--terracotta-light); }
+.how-section .section-label::after { background: rgba(255,255,255,0.15); }
+.how-section h2 { color: var(--cream); }
+.how-section .section-sub { color: rgba(250,247,242,0.6); }
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; position: relative; }
+.steps::before {
+  content: '';
+  position: absolute; top: 2rem; left: 2rem; right: 2rem; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--terracotta), transparent);
+}
+.step { text-align: center; padding: 1rem; position: relative; }
+.step-num {
+  width: 56px; height: 56px; border-radius: 50%;
+  border: 2px solid var(--terracotta);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem; font-weight: 600; color: var(--terracotta);
+  margin: 0 auto 1.2rem; background: var(--deep); position: relative; z-index: 1;
+}
+.step-title { font-size: 0.95rem; font-weight: 500; color: var(--cream); margin-bottom: 0.5rem; }
+.step-desc { font-size: 0.83rem; color: rgba(250,247,242,0.55); line-height: 1.6; }
+
+/* ── TESTIMONIALS ── */
+.testimonials-section { padding: 6rem 4rem; background: var(--warm-white); }
+.testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.testimonial-card {
+  background: white; border: 1px solid var(--border);
+  border-radius: 1.2rem; padding: 2rem;
+  transition: transform 0.2s;
+}
+.testimonial-card:hover { transform: translateY(-3px); }
+.t-stars { color: #F59E0B; font-size: 0.9rem; margin-bottom: 1rem; }
+.t-quote {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem; font-style: italic; line-height: 1.65;
+  color: var(--mid); margin-bottom: 1.5rem;
+}
+.t-author { display: flex; align-items: center; gap: 0.8rem; }
+.t-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: linear-gradient(135deg, #C96A3F, #8B3A1F);
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-weight: 600; font-size: 0.85rem;
+}
+.t-name { font-size: 0.9rem; font-weight: 500; color: var(--deep); }
+.t-location { font-size: 0.78rem; color: var(--soft); }
+
+/* ── CTA ── */
+.cta-section {
+  padding: 6rem 4rem; text-align: center;
+  background: linear-gradient(135deg, #FAF7F2, #F5EDE3);
+}
+.cta-section h2 { margin-bottom: 1rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+.cta-section p { color: var(--mid); max-width: 480px; margin: 0 auto 2.5rem; line-height: 1.7; }
+.cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--deep); padding: 3rem 4rem;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 1.5rem;
+}
+.footer-brand {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem; color: var(--cream); font-weight: 600;
+}
+.footer-copy { font-size: 0.8rem; color: rgba(250,247,242,0.4); }
+.footer-links { display: flex; gap: 2rem; }
+.footer-links a { font-size: 0.8rem; color: rgba(250,247,242,0.5); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--terracotta-light); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  .hero { grid-template-columns: 1fr; }
+  .hero-right { height: 400px; }
+  .hero-left { padding: 3rem 1.5rem; }
+  .section, .how-section, .testimonials-section, .cta-section, .contact-section { padding: 4rem 1.5rem; }
+  .services-grid, .testimonials-grid { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: 1fr 1fr; }
+  .steps::before { display: none; }
+  .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .form-row { grid-template-columns: 1fr; }
+  footer { flex-direction: column; text-align: center; padding: 2rem 1.5rem; }
+}
 /* ── CONTACT ── */
 .contact-section { padding: 6rem 4rem; background: white; }
 .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
