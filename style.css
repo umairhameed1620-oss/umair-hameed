@@ -1,3 +1,37 @@
+/* ── CONTACT ── */
+.contact-section { padding: 6rem 4rem; background: white; }
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+.contact-info h2 { margin-bottom: 1rem; }
+.contact-info p { color: var(--mid); line-height: 1.7; margin-bottom: 2rem; }
+.contact-items { display: flex; flex-direction: column; gap: 1.2rem; }
+.contact-item { display: flex; align-items: center; gap: 1rem; }
+.contact-icon {
+  width: 44px; height: 44px; border-radius: 0.75rem;
+  background: #FFF5EE; display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; flex-shrink: 0;
+}
+.contact-text { font-size: 0.9rem; color: var(--mid); }
+.contact-text strong { display: block; color: var(--deep); font-weight: 500; margin-bottom: 0.1rem; }
+
+.contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+label { font-size: 0.8rem; font-weight: 500; color: var(--mid); letter-spacing: 0.04em; }
+input, textarea, select {
+  padding: 0.85rem 1.1rem; border: 1.5px solid var(--border);
+  border-radius: 0.75rem; font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem; color: var(--deep); background: var(--cream);
+  transition: border-color 0.2s, background 0.2s; outline: none;
+}
+input:focus, textarea:focus, select:focus { border-color: var(--terracotta); background: white; }
+textarea { min-height: 120px; resize: vertical; }
+.form-submit {
+  background: var(--terracotta); color: white;
+  border: none; padding: 1rem 2.5rem; border-radius: 2rem;
+  font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 500;
+  cursor: pointer; transition: all 0.2s; width: fit-content;
+}
+.form-submit:hover { background: var(--deep); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,106,63,0.3); }
 :root {
   --cream: #FAF7F2;
   --warm-white: #FFF9F2;
