@@ -1,0 +1,22 @@
+:root {
+  --cream: #FAF7F2;
+  --warm-white: #FFF9F2;
+  --terracotta: #C96A3F;
+  --terracotta-light: #E8987A;
+  --deep: #1C1410;
+  --mid: #5C4A3A;
+  --soft: #A89080;
+  --border: #E8DDD3;
+  --card: #FFFFFF;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--deep);
+  overflow-x: hidden;
+}
+
+/* ...existing code... (rest of CSS from HTML will be included here) ... */
