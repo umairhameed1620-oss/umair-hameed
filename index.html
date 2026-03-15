@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🏠</text></svg>" />
+    <meta name="description" content="Co Host Pro — Professional Airbnb Co-Host & Property Management across Europe, Dubai, UK, US, and Canada. Maximize your rental income and guest satisfaction." />
+    <meta name="keywords" content="Airbnb, Co-Host, Property Management, Europe, Dubai, UK, United States, Canada, Rental, Hosting, Superhost" />
+    <meta name="author" content="Co Host Pro" />
+    <meta property="og:title" content="Co Host Pro — Airbnb Co-Host" />
+    <meta property="og:description" content="Professional Airbnb Co-Host & Property Management. Maximize your rental income and guest satisfaction." />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Co Host Pro" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Co Host Pro — Airbnb Co-Host</title>
@@ -9,6 +17,8 @@
   <meta http-equiv="Cache-Control" content="public, max-age=604800, immutable" />
 </head>
 <body>
+
+  <div id="page-loader"><div class="loader" aria-label="Loading"></div></div>
 
   <!-- NAV -->
 
@@ -31,7 +41,7 @@
       <h1>Your property,<br><em>expertly</em><br>cared for.</h1>
       <p class="hero-bio">I help property owners like you maximize rental income and deliver 5-star guest experiences — without any of the stress. From guest messaging to maintenance coordination, I handle it all.</p>
       <div class="hero-actions">
-        <a href="#contact" class="btn-primary">Get a Free Consultation</a>
+        <a href="#contact" class="btn-primary" style="font-size:1.1rem;padding:1.1rem 2.7rem;font-weight:600;box-shadow:0 8px 32px rgba(201,106,63,0.18);">Get a Free Consultation</a>
         <a href="#services" class="btn-secondary">See What I Offer</a>
       </div>
       <div class="hero-stats">
@@ -280,6 +290,15 @@
       <a href="#contact">Contact</a>
     </div>
   </footer>
+
+<script>
+  window.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+      var loader = document.getElementById('page-loader');
+      if(loader) loader.classList.add('hidden');
+    }, 600);
+  });
+</script>
 
 </body>
 </html>
