@@ -102,6 +102,7 @@ export default function App() {
     { key: "sales",     icon: "💳", label: "Record Sale"    },
     { key: "inventory", icon: "📦", label: "Inventory"      },
     { key: "reports",   icon: "📈", label: "P&L Reports"    },
+    { key: "customers", icon: "📞", label: "Customer Caller ID" },
   ];
 
   return (
@@ -179,6 +180,7 @@ export default function App() {
           {tab === "sales"     && <RecordSale  products={products} setProducts={setProducts} sales={sales} setSales={setSales} notify={notify} />}
           {tab === "inventory" && <Inventory   products={products} setProducts={setProducts} notify={notify} />}
           {tab === "reports"   && <Reports     products={products} sales={sales} stockIn={stockIn} month={month} setMonth={setMonth} />}
+          {tab === "customers" && <CustomerCallerID />}
         </main>
       </div>
     </div>
@@ -767,6 +769,187 @@ function Reports({ products, sales, stockIn, month, setMonth }) {
             No sales recorded for {label}. Go to Record Sale to add transactions.
           </div>
         )}
+      </div>
+    </div>
+  );
+}
+// ══════════════════════════════════════════════════════════════════════════
+// CUSTOMER CALLER ID
+// ══════════════════════════════════════════════════════════════════════════
+function CustomerCallerID() {
+  const [customers, setCustomers] = useState([
+    {id:1,name:'Ahmed Khan',phone:'07700111222',address:'12 Bradford Rd',notes:'Likes extra sauce',type:'VIP',spend:'£45',calls:8,lastCall:'Today'},
+    {id:2,name:'Sarah Patel',phone:'07811334455',address:'5 Mill Lane',notes:'Vegetarian only',type:'Regular',spend:'£22',calls:3,lastCall:'Yesterday'},
+    {id:3,name:'Mohammed Ali',phone:'07922556677',address:'',notes:'',type:'Regular',spend:'£18',calls:2,lastCall:'12 May'},
+    {id:4,name:'Lisa Brown',phone:'07533778899',address:'',notes:'New customer',type:'New',spend:'',calls:1,lastCall:'Today'},
+  ]);
+  const [nextId, setNextId] = useState(5);
+  const [callsToday, setCallsToday] = useState(0);
+  const [simPhone, setSimPhone] = useState('');
+  const [activeCall, setActiveCall] = useState(null);
+  const [search, setSearch] = useState('');
+  const [form, setForm] = useState({name:'',phone:'',address:'',notes:'',type:'Regular',spend:''});
+  const [saveMsg, setSaveMsg] = useState('');
+
+  const initials = name => name.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+
+  const incomingCall = () => {
+    const ph = simPhone.trim().replace(/\s+/g,'');
+    if (!ph) return;
+    setCallsToday(c => c+1);
+    const match = customers.find(c => c.phone.replace(/\s+/g,'') === ph);
+    if (match) {
+      setCustomers(prev => prev.map(c => c.id === match.id ? {...c, calls: c.calls+1, lastCall:'Just now'} : c));
+      setActiveCall({...match, found:true});
+    } else {
+      setActiveCall({found:false, phone:ph});
+      setForm(f => ({...f, phone:ph}));
+    }
+  };
+
+  const endCall = () => { setActiveCall(null); setSimPhone(''); };
+
+  const saveCustomer = () => {
+    if (!form.name || !form.phone) { setSaveMsg('Name and phone required.'); setTimeout(()=>setSaveMsg(''),3000); return; }
+    const exists = customers.find(c => c.phone.replace(/\s+/g,'') === form.phone.replace(/\s+/g,''));
+    if (exists) { setSaveMsg('Number already exists: ' + exists.name); setTimeout(()=>setSaveMsg(''),3000); return; }
+    setCustomers(prev => [...prev, {...form, id:nextId, calls:0, lastCall:'Never'}]);
+    setNextId(n => n+1);
+    setForm({name:'',phone:'',address:'',notes:'',type:'Regular',spend:''});
+    setSaveMsg('✅ Customer saved!');
+    setTimeout(()=>setSaveMsg(''),3000);
+  };
+
+  const filtered = customers.filter(c =>
+    c.name.toLowerCase().includes(search.toLowerCase()) || c.phone.includes(search)
+  );
+
+  const tagColor = t => t==='VIP' ? C.amber : t==='New' ? C.greenL : C.blue;
+
+  return (
+    <div>
+      <h1 style={{fontSize:24,fontWeight:800,letterSpacing:-0.5,marginBottom:6}}>📞 Customer Caller ID</h1>
+      <p style={{color:C.muted,fontSize:13,marginBottom:20}}>Enter an incoming phone number to instantly identify the customer</p>
+
+      {/* Stats */}
+      <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:14,marginBottom:20}}>
+        {[
+          {label:'Total Customers', value:customers.length,                               color:C.blue},
+          {label:'VIP Customers',   value:customers.filter(c=>c.type==='VIP').length,     color:C.amber},
+          {label:'Calls Today',     value:callsToday,                                     color:C.greenL},
+        ].map(k=>(
+          <div key={k.label} style={{...T.card,padding:16,borderLeft:`3px solid ${k.color}`}}>
+            <div style={{fontSize:10,color:C.muted,fontWeight:700,letterSpacing:1,textTransform:'uppercase',marginBottom:4}}>{k.label}</div>
+            <div style={{fontSize:28,fontWeight:800,color:k.color}}>{k.value}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Caller ID box */}
+      <div style={{...T.card,padding:22,marginBottom:20}}>
+        <div style={{fontSize:11,fontWeight:700,color:C.muted,textTransform:'uppercase',letterSpacing:1.5,marginBottom:14}}>📲 Incoming Call</div>
+        <div style={{display:'flex',gap:10,marginBottom:14,flexWrap:'wrap'}}>
+          <input style={{...T.input,flex:1,minWidth:200}} className="input-field"
+            placeholder="Enter incoming phone number..." value={simPhone}
+            onChange={e=>setSimPhone(e.target.value)}
+            onKeyDown={e=>e.key==='Enter'&&incomingCall()} />
+          <button style={{...T.btn(C.green),padding:'10px 20px'}} className="btn" onClick={incomingCall}>📞 Incoming Call</button>
+          <button style={{...T.btn(C.red),padding:'10px 20px'}} className="btn" onClick={endCall}>📵 End Call</button>
+        </div>
+
+        {!activeCall && (
+          <div style={{textAlign:'center',padding:'24px 0',color:C.muted,border:`1px dashed ${C.border}`,borderRadius:8,fontSize:13}}>
+            No active call — enter a phone number above
+          </div>
+        )}
+
+        {activeCall && activeCall.found && (
+          <div style={{background:'#0d1f15',border:'1px solid #1a3a22',borderRadius:10,padding:18}}>
+            <div style={{display:'flex',alignItems:'center',gap:16,marginBottom:14}}>
+              <div style={{width:56,height:56,borderRadius:'50%',background:activeCall.type==='VIP'?C.amber:C.green,display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,fontWeight:800,color:'#fff',flexShrink:0}}>
+                {initials(activeCall.name)}
+              </div>
+              <div>
+                <div style={{fontSize:22,fontWeight:800,color:C.greenL}}>{activeCall.name}</div>
+                <div style={{fontSize:13,color:C.muted,marginTop:2}}>{activeCall.phone}</div>
+                <span style={{...T.badge(tagColor(activeCall.type)),marginTop:4}}>{activeCall.type} · {activeCall.calls} calls</span>
+              </div>
+            </div>
+            <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:10}}>
+              {[['Address',activeCall.address||'—'],['Avg Spend',activeCall.spend||'—'],['Notes',activeCall.notes||'—']].map(([l,v])=>(
+                <div key={l} style={{background:C.card,borderRadius:8,padding:'10px 12px'}}>
+                  <div style={{fontSize:10,color:C.muted,fontWeight:700,marginBottom:3}}>{l}</div>
+                  <div style={{fontSize:13,fontWeight:600}}>{v}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {activeCall && !activeCall.found && (
+          <div style={{background:'#1a1200',border:'1px solid #3a2e00',borderRadius:10,padding:18}}>
+            <div style={{display:'flex',alignItems:'center',gap:14}}>
+              <div style={{width:52,height:52,borderRadius:'50%',background:C.muted,display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,color:'#fff'}}>?</div>
+              <div>
+                <div style={{fontSize:20,fontWeight:800,color:C.amber}}>Unknown Caller</div>
+                <div style={{fontSize:13,color:C.muted,marginTop:2}}>{activeCall.phone}</div>
+                <span style={{...T.badge(C.amber),marginTop:4}}>Not in directory — add below</span>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1.4fr',gap:20}}>
+        {/* Add Customer */}
+        <div style={{...T.card,padding:22}}>
+          <div style={{fontSize:11,fontWeight:700,color:C.muted,textTransform:'uppercase',letterSpacing:1.5,marginBottom:14}}>➕ Add Customer</div>
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
+            {[['Full Name','name','text'],['Phone Number','phone','text'],['Address','address','text'],['Avg Spend','spend','text'],['Notes','notes','text']].map(([l,k,t])=>(
+              <div key={k} style={k==='notes'?{gridColumn:'1/-1'}:{}}>
+                <label style={T.label}>{l}</label>
+                <input style={T.input} className="input-field" type={t} placeholder={l} value={form[k]} onChange={e=>setForm(f=>({...f,[k]:e.target.value}))} />
+              </div>
+            ))}
+            <div>
+              <label style={T.label}>Type</label>
+              <select style={{...T.input}} value={form.type} onChange={e=>setForm(f=>({...f,type:e.target.value}))}>
+                <option>Regular</option><option>VIP</option><option>New</option>
+              </select>
+            </div>
+          </div>
+          <button style={{...T.btn(C.green),width:'100%',padding:12,marginTop:12,fontSize:14}} className="btn" onClick={saveCustomer}>
+            💾 Save Customer
+          </button>
+          {saveMsg && <div style={{fontSize:12,marginTop:8,color:saveMsg.startsWith('✅')?C.greenL:C.red}}>{saveMsg}</div>}
+        </div>
+
+        {/* Directory */}
+        <div style={{...T.card,padding:22}}>
+          <div style={{fontSize:11,fontWeight:700,color:C.muted,textTransform:'uppercase',letterSpacing:1.5,marginBottom:14}}>👥 Customer Directory</div>
+          <input style={{...T.input,marginBottom:12}} className="input-field"
+            placeholder="Search by name or phone..." value={search} onChange={e=>setSearch(e.target.value)} />
+          <table style={{width:'100%',borderCollapse:'collapse'}}>
+            <thead><tr>
+              {['Name','Phone','Type','Calls','Last Call',''].map(h=><th key={h} style={T.th}>{h}</th>)}
+            </tr></thead>
+            <tbody>
+              {filtered.map(c=>(
+                <tr key={c.id} className="row-hover">
+                  <td style={{...T.td,fontWeight:700}}>{c.name}</td>
+                  <td style={{...T.td,fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.muted}}>{c.phone}</td>
+                  <td style={T.td}><span style={T.badge(tagColor(c.type))}>{c.type}</span></td>
+                  <td style={T.td}>{c.calls}</td>
+                  <td style={{...T.td,color:C.muted,fontSize:12}}>{c.lastCall}</td>
+                  <td style={T.td}>
+                    <button style={{background:'#1a0a0a',border:`1px solid #2a1515`,borderRadius:4,padding:'3px 8px',color:C.red,cursor:'pointer',fontSize:12,fontFamily:'inherit'}}
+                      onClick={()=>setCustomers(prev=>prev.filter(x=>x.id!==c.id))}>🗑</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
